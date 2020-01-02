@@ -16,47 +16,33 @@ struct TaskView: View {
     @State var dragOffset = CGSize.zero
     @State var animate = false
     @State var giveHapticFeedback = true
-    @State var aboveTrigger = true
     @State var deleteAction = true
-    @State var deleteActive = false
-    @State var markActive = false
     
     let screenSize = UIScreen.main.bounds
     let lightGenerator = UIImpactFeedbackGenerator(style: .light)
     
     var body: some View {
         ZStack {
-//            Rectangle()
-//                .frame(width: self.screenSize.width, height: CELL_HEIGHT)
-//                .foregroundColor(Color(ACTION_ICON_COLOR))
             ZStack {
                 Rectangle()
                     .frame(width: self.screenSize.width, height: CELL_HEIGHT)
-                    .foregroundColor(Color(DELETE_COLOR))
-                    .offset(x: deleteActive ? 0 : screenSize.width)
-                    .animation(.interactiveSpring())
+                    .foregroundColor(deleteAction ? Color(DELETE_COLOR) : Color(MARK_COLOR))
                 // Delete action icon
                 HStack {
                     Image(DELETE_ICON)
                         .renderingMode(.template)
-                        .foregroundColor(self.deleteActive ? Color(ACTION_ICON_COLOR) : Color(DELETE_COLOR))
+                        .foregroundColor(Color(ACTION_ICON_COLOR))
                         .padding()
                         .animation(.interactiveSpring())
                     Spacer()
                 }
                 .offset(x: dragOffset.width < TASK_DELETE_TRIGGER || dragOffset.width > -(DELETE_ICON_OFFSET) ? dragOffset.width + screenSize.width + EXTRA_ACTION_OFFSET : screenSize.width - DELETE_ICON_OFFSET)
-            }
-            ZStack {
-                Rectangle()
-                    .frame(width: self.screenSize.width, height: CELL_HEIGHT)
-                    .foregroundColor(Color(MARK_COLOR))
-                    .offset(x: markActive ? 0 : 0 - screenSize.width)
-                    .animation(.interactiveSpring())
+                
                 // Mark action icon
                 HStack {
                     Image(MARK_ICON)
                         .renderingMode(.template)
-                        .foregroundColor(markActive ? Color(ACTION_ICON_COLOR) : Color(MARK_COLOR))
+                        .foregroundColor(Color(ACTION_ICON_COLOR))
                         .padding()
                         .animation(.interactiveSpring())
                     Spacer()
@@ -67,15 +53,15 @@ struct TaskView: View {
                 Rectangle()
                     .frame(height: CELL_HEIGHT)
                     .foregroundColor(Color(self.taskViewModel.displayColor))
-                VStack {
-                    Spacer()
-                    Rectangle()
-                        .frame(height: DIVIDER_WIDTH)
-                        .foregroundColor(Color(self.taskViewModel.displayBorderColor))
-                        .opacity(TASK_DIVIDER_OPACITY)
-                        .blendMode(.luminosity)
-                }
-                .frame(height: CELL_HEIGHT)
+//                VStack {
+//                    Spacer()
+//                    Rectangle()
+//                        .frame(height: DIVIDER_WIDTH)
+//                        .foregroundColor(Color(self.taskViewModel.displayBorderColor))
+//                        .opacity(TASK_DIVIDER_OPACITY)
+//                        .blendMode(.luminosity)
+//                }
+//                .frame(height: CELL_HEIGHT)
                 HStack {
                     Button (action: {
                         self.lightGenerator.impactOccurred()
@@ -133,22 +119,18 @@ struct TaskView: View {
                     if value.translation.width < TASK_DELETE_TRIGGER && self.giveHapticFeedback && self.deleteAction {
                         self.lightGenerator.impactOccurred()
                         self.giveHapticFeedback = false
-                        self.deleteActive = true
                     }
                     else if value.translation.width > TASK_DELETE_TRIGGER && !self.giveHapticFeedback && self.deleteAction {
                         self.lightGenerator.impactOccurred()
                         self.giveHapticFeedback = true
-                        self.deleteActive = false
                     }
                     else if value.translation.width > TASK_MARK_TRIGGER && self.giveHapticFeedback && !self.deleteAction {
                         self.lightGenerator.impactOccurred()
                         self.giveHapticFeedback = false
-                        self.markActive = true
                     }
                     else if value.translation.width < TASK_MARK_TRIGGER && !self.giveHapticFeedback && !self.deleteAction {
                         self.lightGenerator.impactOccurred()
                         self.giveHapticFeedback = true
-                        self.markActive = false
                     }
                 }
                 .onEnded {
