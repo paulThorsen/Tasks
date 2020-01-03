@@ -22,11 +22,13 @@ let COLOR_SELECTION_CORNER_RADIUS: CGFloat = 4
 let COLOR_SELECTION_LINE_WIDTH: CGFloat = 12
 let TASK_DELETE_TRIGGER: CGFloat = -(screenSize.width / 2.5)
 let TASK_MARK_TRIGGER: CGFloat = screenSize.width / 2.5
-let EXTRA_ACTION_OFFSET: CGFloat = 5
-let DELETE_ICON_OFFSET: CGFloat = 60
-let MARK_ICON_OFFSET: CGFloat = 70
+let DELETE_ICON_OFFSET: CGFloat = 40
+let MARK_ICON_OFFSET: CGFloat = 65
 let ADD_COLOR_BUTTON_WIDTH: CGFloat = screenSize.width / 4
 let SECTION_WIDTH: CGFloat = 3
+let EXP_ALG_BASE: CGFloat = 0.9
+let EXP_ALG_EXP_OFFSET: CGFloat = 0.095
+let EXTRA_DELETE_OFFSET: CGFloat = 15
 
 // Double
 let TASK_ICON_OPACITY: Double = 0.5
@@ -47,6 +49,7 @@ let MARK_COLOR = "mark_color"
 // String - Icons
 let SHOW_MORE_ICON = "more"
 let DELETE_ICON = "delete"
+let DELETE_WIDE_ICON = "delete_wide"
 let COMPLETED_STATUS_ICON = "completed"
 let NOT_COMPLETED_STATUS_ICON = "not_completed"
 let MARK_ICON = "mark"

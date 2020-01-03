@@ -17,6 +17,8 @@ struct TaskView: View {
     @State var animate = false
     @State var giveHapticFeedback = true
     @State var deleteAction = true
+    @State var markActive = false
+    @State var deleteActive = false
     
     let screenSize = UIScreen.main.bounds
     let lightGenerator = UIImpactFeedbackGenerator(style: .light)
@@ -36,7 +38,7 @@ struct TaskView: View {
                         .animation(.interactiveSpring())
                     Spacer()
                 }
-                .offset(x: dragOffset.width < TASK_DELETE_TRIGGER || dragOffset.width > -(DELETE_ICON_OFFSET) ? dragOffset.width + screenSize.width + EXTRA_ACTION_OFFSET : screenSize.width - DELETE_ICON_OFFSET)
+                .offset(x: deleteActionOffset())
                 
                 // Mark action icon
                 HStack {
@@ -47,7 +49,7 @@ struct TaskView: View {
                         .animation(.interactiveSpring())
                     Spacer()
                 }
-                .offset(x: dragOffset.width > TASK_MARK_TRIGGER || dragOffset.width < MARK_ICON_OFFSET + EXTRA_ACTION_OFFSET ? dragOffset.width - MARK_ICON_OFFSET : 0 + EXTRA_ACTION_OFFSET)
+                .offset(x: markActionOffset())
             }
             ZStack {
                 Rectangle()
@@ -110,25 +112,28 @@ struct TaskView: View {
                     if value.translation.width < TASK_DELETE_TRIGGER && self.giveHapticFeedback && self.deleteAction {
                         self.lightGenerator.impactOccurred()
                         self.giveHapticFeedback = false
+                        self.deleteActive = true
                     }
                     else if value.translation.width > TASK_DELETE_TRIGGER && !self.giveHapticFeedback && self.deleteAction {
                         self.lightGenerator.impactOccurred()
                         self.giveHapticFeedback = true
+                        self.deleteActive = false
                     }
                     else if value.translation.width > TASK_MARK_TRIGGER && self.giveHapticFeedback && !self.deleteAction {
                         self.lightGenerator.impactOccurred()
                         self.giveHapticFeedback = false
+                        self.markActive = true
                     }
                     else if value.translation.width < TASK_MARK_TRIGGER && !self.giveHapticFeedback && !self.deleteAction {
                         self.lightGenerator.impactOccurred()
                         self.giveHapticFeedback = true
+                        self.markActive = false
                     }
                 }
                 .onEnded {
                     value in
                     self.animate = true
                     self.giveHapticFeedback = true
-//                    self.cancelSticks = false
                     if value.translation.width < TASK_DELETE_TRIGGER && self.deleteAction {
                         self.dragOffset.width = -(self.screenSize.width)
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
@@ -153,8 +158,25 @@ struct TaskView: View {
         }
     }
     
-    func stickingPosition() {
-        
+    func markActionOffset() -> CGFloat {
+        if self.markActive || dragOffset.width < MARK_ICON_OFFSET {
+            return dragOffset.width - MARK_ICON_OFFSET
+        }
+        else {
+            // Exponential decay algorithm to create a restisted pulling effect
+            return pow(EXP_ALG_BASE, dragOffset.width * EXP_ALG_EXP_OFFSET) * (dragOffset.width - MARK_ICON_OFFSET)
+        }
+    }
+    
+    func deleteActionOffset() -> CGFloat {
+        //FIX JUMP WHEN GOING TO RESISTED PULL PART
+        if self.deleteActive || dragOffset.width > -(DELETE_ICON_OFFSET) - EXTRA_DELETE_OFFSET {
+            return dragOffset.width + screenSize.width
+        }
+        else {
+            // Exponential decay algorithm to create a restisted pulling effect
+            return screenSize.width - DELETE_ICON_OFFSET - EXTRA_DELETE_OFFSET - pow(EXP_ALG_BASE, -(dragOffset.width) * EXP_ALG_EXP_OFFSET) * (-(dragOffset.width) - DELETE_ICON_OFFSET - EXTRA_DELETE_OFFSET)
+        }
     }
 }
 
