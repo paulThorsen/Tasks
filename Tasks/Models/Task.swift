@@ -22,13 +22,13 @@ public class Task: Identifiable {
         self.id = task.id
     }
     
-    init(title: String) {
+    init(title: String, color: String) {
         self.dateCreated = Date()
         self.dateAddedToToDoList = Date()
         self.dateCompleted = Date()
         self.title = title
         self.completed = false
-        self.color = "orange_color"
+        self.color = color
         self.id = UUID()
     }
     

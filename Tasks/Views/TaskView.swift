@@ -53,15 +53,6 @@ struct TaskView: View {
                 Rectangle()
                     .frame(height: CELL_HEIGHT)
                     .foregroundColor(Color(self.taskViewModel.displayColor))
-//                VStack {
-//                    Spacer()
-//                    Rectangle()
-//                        .frame(height: DIVIDER_WIDTH)
-//                        .foregroundColor(Color(self.taskViewModel.displayBorderColor))
-//                        .opacity(TASK_DIVIDER_OPACITY)
-//                        .blendMode(.luminosity)
-//                }
-//                .frame(height: CELL_HEIGHT)
                 HStack {
                     Button (action: {
                         self.lightGenerator.impactOccurred()
@@ -161,11 +152,15 @@ struct TaskView: View {
             TaskModalView(taskModalViewModel: TaskModalViewModel(task: self.taskViewModel.task))
         }
     }
+    
+    func stickingPosition() {
+        
+    }
 }
 
 struct TaskView_Previews: PreviewProvider {
     static var previews: some View {
-        let task = Task(title: "test title")
+        let task = Task(title: "test title", color: "red_color")
 
         return TaskView(taskViewModel: TaskViewModel(task: task))
             .environment(\.colorScheme, .dark)

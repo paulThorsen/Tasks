@@ -21,6 +21,6 @@ struct TaskModalView: View {
 
 struct ToDoTaskModalView_Previews: PreviewProvider {
     static var previews: some View {
-        TaskModalView(taskModalViewModel: TaskModalViewModel(task: Task(title: "test title")))
+        TaskModalView(taskModalViewModel: TaskModalViewModel(task: Task(title: "test title", color: "red_color")))
     }
 }

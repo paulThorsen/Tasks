@@ -14,27 +14,17 @@ struct TaskListView: View {
     
     var body: some View {
         VStack(spacing: LIST_SPACING) {
-            Rectangle()
-                .frame(height: DIVIDER_WIDTH)
-                .foregroundColor(Color(DIVIDER_COLOR))
-                .opacity(TASK_DIVIDER_OPACITY)
-                .blendMode(.luminosity)
             ForEach(self.tasks.filter { !$0.completed } .sorted { $0.dateAddedToToDoList ?? Date() > $1.dateAddedToToDoList ?? Date() }) { taskCD in
                 TaskView(taskViewModel: TaskViewModel(task: Task(task: taskCD)))
                 Rectangle()
-                .frame(height: DIVIDER_WIDTH)
-                .foregroundColor(Color(DIVIDER_COLOR))
-                .opacity(TASK_DIVIDER_OPACITY)
-                .blendMode(.luminosity)
-                
+                    .frame(height: DIVIDER_WIDTH)
+                    .foregroundColor(Color(DIVIDER_COLOR))
             }
             ForEach(self.tasks.filter{$0.completed} .sorted { $0.dateAddedToToDoList ?? Date() > $1.dateAddedToToDoList ?? Date() }) { taskCD in
                 TaskView(taskViewModel: TaskViewModel(task: Task(task: taskCD)))
                 Rectangle()
-                .frame(height: DIVIDER_WIDTH)
-                .foregroundColor(Color(DIVIDER_COLOR))
-                .opacity(TASK_DIVIDER_OPACITY)
-                .blendMode(.luminosity)
+                    .frame(height: DIVIDER_WIDTH)
+                    .foregroundColor(Color(DIVIDER_COLOR))
             }
             Spacer()
         }

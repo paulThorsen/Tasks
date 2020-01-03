@@ -25,6 +25,8 @@ let TASK_MARK_TRIGGER: CGFloat = screenSize.width / 2.5
 let EXTRA_ACTION_OFFSET: CGFloat = 5
 let DELETE_ICON_OFFSET: CGFloat = 60
 let MARK_ICON_OFFSET: CGFloat = 70
+let ADD_COLOR_BUTTON_WIDTH: CGFloat = screenSize.width / 4
+let SECTION_WIDTH: CGFloat = 3
 
 // Double
 let TASK_ICON_OPACITY: Double = 0.5
@@ -48,3 +50,11 @@ let DELETE_ICON = "delete"
 let COMPLETED_STATUS_ICON = "completed"
 let NOT_COMPLETED_STATUS_ICON = "not_completed"
 let MARK_ICON = "mark"
+let ADD_ICON = "add"
+
+enum Colors: String, CaseIterable {
+    case red = "red_color"
+    case green = "green_color"
+    case orange = "orange_color"
+    case gray = "purple_color"
+}

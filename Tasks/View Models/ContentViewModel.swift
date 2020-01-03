@@ -12,12 +12,23 @@ import CoreData
 
 public class ContentViewModel: ObservableObject {
     init() {
-        context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        self.createTaskColorSelection = ""
     }
     
-    let context: NSManagedObjectContext
-    func addTask(title: String) {
-        Services.shared.addTask(title: title)
+    var createTaskColorSelection: String {
+        didSet {
+            objectWillChange.send()
+            if self.createTaskColorSelection != "" {
+                self.addTask(title: "", color: self.createTaskColorSelection)
+            }
+            self.createTaskColorSelection = ""
+        }
     }
+    
+    func addTask(title: String, color: String) {
+        Services.shared.addTask(title: title, color: color)
+    }
+    
+    
     
 }

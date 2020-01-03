@@ -18,8 +18,8 @@ public class Services {
     let dao: DAOProtocol
     static let shared = Services()
     
-    func addTask(title: String) {
-        let task = Task(title: title)
+    func addTask(title: String, color: String) {
+        let task = Task(title: title, color: color)
         dao.create(task: task)
     }
     

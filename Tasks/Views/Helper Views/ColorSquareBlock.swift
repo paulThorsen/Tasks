@@ -11,13 +11,6 @@ import SwiftUI
 struct ColorSquareBlock: View {
     @Binding var taskColor: String
     
-    enum Colors: String, CaseIterable {
-        case red = "red_color"
-        case green = "green_color"
-        case orange = "orange_color"
-        case gray = "purple_color"
-    }
-    
     var body: some View {
         HStack {
             ForEach(Colors.allCases, id: \.self) { color in
