@@ -29,6 +29,12 @@ struct ContentView: View {
             }
             .navigationBarTitle("Tasks", displayMode: .inline)
         }
+        .onAppear(perform: {
+            let center = UNUserNotificationCenter.current()
+            center.requestAuthorization(options: [.badge])
+               { (granted, error) in
+               }
+        })
     }
 }
 

@@ -14,20 +14,27 @@ struct TaskListView: View {
     
     var body: some View {
         VStack(spacing: LIST_SPACING) {
-            ForEach(self.tasks.filter { !$0.completed } .sorted { $0.dateAddedToToDoList ?? Date() > $1.dateAddedToToDoList ?? Date() }) { taskCD in
-                TaskView(taskViewModel: TaskViewModel(task: Task(task: taskCD)))
+            Rectangle()
+                .frame(height: DIVIDER_WIDTH)
+                .foregroundColor(Color(DIVIDER_COLOR))
+            ForEach(self.tasks.filter { !$0.completed } .sorted { $0.dateAddedToToDoList ?? Date() > $1.dateAddedToToDoList ?? Date() }) { task in
+                TaskView(taskViewModel: TaskViewModel(task: Task(task: task)))
                 Rectangle()
                     .frame(height: DIVIDER_WIDTH)
                     .foregroundColor(Color(DIVIDER_COLOR))
             }
-            ForEach(self.tasks.filter{$0.completed} .sorted { $0.dateAddedToToDoList ?? Date() > $1.dateAddedToToDoList ?? Date() }) { taskCD in
-                TaskView(taskViewModel: TaskViewModel(task: Task(task: taskCD)))
+            ForEach(self.tasks.filter{$0.completed} .sorted { $0.dateAddedToToDoList ?? Date() > $1.dateAddedToToDoList ?? Date() }) { task in
+                TaskView(taskViewModel: TaskViewModel(task: Task(task: task)))
                 Rectangle()
                     .frame(height: DIVIDER_WIDTH)
                     .foregroundColor(Color(DIVIDER_COLOR))
             }
             Spacer()
         }
+        .onAppear(perform: {
+            print(self.tasks.filter { !$0.completed })
+            UIApplication.shared.applicationIconBadgeNumber = self.tasks.filter { !$0.completed } .count
+        })
     }
 }
 

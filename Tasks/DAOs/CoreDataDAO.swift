@@ -30,8 +30,18 @@ public class CoreDataDAO: DAOProtocol {
         }
     }
     
-    public func read() {
+    public func read() -> [Task] {
+        let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "TaskCD")
+        let result = try? managedObjectContext.fetch(fetchRequest)
+        let tasks = result as! [TaskCD]
         
+        var taskArray:[Task] = []
+        for task in tasks {
+            taskArray.append(Task(task: task))
+        }
+        
+        return taskArray
     }
     
     public func update(task: Task) {
@@ -63,5 +73,11 @@ public class CoreDataDAO: DAOProtocol {
         let tasks = result as! [TaskCD]
         
         managedObjectContext.delete(tasks[0])
+        
+        do {
+            try managedObjectContext.save()
+        } catch {
+            print(error)
+        }
     }
 }

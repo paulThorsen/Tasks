@@ -29,6 +29,7 @@ let SECTION_WIDTH: CGFloat = 3
 let EXP_ALG_BASE: CGFloat = 0.9
 let EXP_ALG_EXP_OFFSET: CGFloat = 0.095
 let EXTRA_DELETE_OFFSET: CGFloat = 15
+let DRAG_GESTURE_MIN_DISTANCE: CGFloat = 20
 
 // Double
 let TASK_ICON_OPACITY: Double = 0.5
@@ -40,6 +41,7 @@ let ICON_BLACK_COLOR = "black"
 let DELETE_COLOR = "delete_color"
 let DIVIDER_COLOR = "divider_color"
 let COMPLETED_TASK_BG_COLOR = "completed_task_bg"
+let NOT_COMPLETED_TASK_BG_COLOR = "not_completed_task_bg"
 let TASK_ICON_COLOR = "task_icon_color"
 let BLACK_DIVIDER_COLOR = "black"
 let TASK_TITLE_NOT_COMPLETED_COLOR  = "task_title_color_not_completed"
@@ -57,7 +59,7 @@ let ADD_ICON = "add"
 
 enum Colors: String, CaseIterable {
     case red = "red_color"
-    case green = "green_color"
     case orange = "orange_color"
+    case green = "green_color"
     case gray = "purple_color"
 }

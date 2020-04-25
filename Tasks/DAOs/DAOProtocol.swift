@@ -10,7 +10,7 @@ import Foundation
 
 public protocol DAOProtocol {
     func create(task: Task)
-    func read()
+    func read() -> [Task]
     func update(task: Task)
     func delete(task: Task)
 }

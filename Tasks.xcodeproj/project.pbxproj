@@ -12,6 +12,7 @@
 		480F120123BBF0990088469C /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480F120023BBF0990088469C /* Services.swift */; };
 		480F120323BBF7C70088469C /* DAOProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480F120223BBF7C70088469C /* DAOProtocol.swift */; };
 		480F120523BC23130088469C /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480F120423BC23130088469C /* Task.swift */; };
+		481DB62823BFC9A900C7C86F /* CustomTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481DB62723BFC9A900C7C86F /* CustomTextFieldView.swift */; };
 		4835657023BC667700CEBD11 /* TaskModalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4835656F23BC667700CEBD11 /* TaskModalViewModel.swift */; };
 		4835657723BC764500CEBD11 /* ColorSquareBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4835657623BC764500CEBD11 /* ColorSquareBlock.swift */; };
 		48446F4423B7E5BD00B1BDB6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48446F4323B7E5BD00B1BDB6 /* AppDelegate.swift */; };
@@ -56,6 +57,7 @@
 		480F120023BBF0990088469C /* Services.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
 		480F120223BBF7C70088469C /* DAOProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DAOProtocol.swift; sourceTree = "<group>"; };
 		480F120423BC23130088469C /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		481DB62723BFC9A900C7C86F /* CustomTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldView.swift; sourceTree = "<group>"; };
 		4835656F23BC667700CEBD11 /* TaskModalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskModalViewModel.swift; sourceTree = "<group>"; };
 		4835657623BC764500CEBD11 /* ColorSquareBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSquareBlock.swift; sourceTree = "<group>"; };
 		48446F4023B7E5BD00B1BDB6 /* Tasks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tasks.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -138,6 +140,7 @@
 			children = (
 				48B6114E23BDCE680009440D /* AddColorSquareBlock.swift */,
 				4835657623BC764500CEBD11 /* ColorSquareBlock.swift */,
+				481DB62723BFC9A900C7C86F /* CustomTextFieldView.swift */,
 			);
 			path = "Helper Views";
 			sourceTree = "<group>";
@@ -383,6 +386,7 @@
 				480F11FF23BBED750088469C /* CoreDataDAO.swift in Sources */,
 				48446F4423B7E5BD00B1BDB6 /* AppDelegate.swift in Sources */,
 				480F120323BBF7C70088469C /* DAOProtocol.swift in Sources */,
+				481DB62823BFC9A900C7C86F /* CustomTextFieldView.swift in Sources */,
 				4835657723BC764500CEBD11 /* ColorSquareBlock.swift in Sources */,
 				480F120123BBF0990088469C /* Services.swift in Sources */,
 				48446F7F23B7E7F500B1BDB6 /* TaskViewModel.swift in Sources */,

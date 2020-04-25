@@ -12,7 +12,14 @@ import CoreData
 
 public class TaskListViewModel: ObservableObject {
     
-    init() {
-        
-    }
+//    init() {
+//        self.tasks = Services.shared.readTasks()
+//    }
+//    
+//    var tasks: [Task] {
+//        didSet {
+//            objectWillChange.send()
+//            self.tasks = Services.shared.readTasks()
+//        }
+//    }
 }

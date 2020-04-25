@@ -11,10 +11,10 @@ import SwiftUI
 import Combine
 
 public class TaskViewModel: ObservableObject {
-//    let didChange = PassthroughSubject<TaskViewModel, Never>()
     
     init(task: Task) {
         self.task = task
+        self.newTitle = task.title!
         
         // if completed
         if task.completed {
@@ -27,7 +27,7 @@ public class TaskViewModel: ObservableObject {
         else {
             self.titleDisplayColor = TASK_TITLE_NOT_COMPLETED_COLOR
             self.statusImage = NOT_COMPLETED_STATUS_ICON
-            self.displayColor = task.color!
+            self.displayColor = NOT_COMPLETED_TASK_BG_COLOR
             self.displayBorderColor = BLACK_DIVIDER_COLOR
         }
     }
@@ -38,21 +38,36 @@ public class TaskViewModel: ObservableObject {
     var displayBorderColor: String
     var titleDisplayColor: String
     var statusImage: String
+    var newTitle: String {
+        didSet {
+            objectWillChange.send()
+            self.task.title = self.newTitle
+            updateTask()
+        }
+    }
+    
     var task: Task
+    
+    func updateTask() {
+        Services.shared.updateTask(task: self.task)
+    }
     
     func toggleTaskCompletion() {
         // if adding back to To-Do list, new date for dateAddedToToDoList
         if self.task.completed {
-            self.task.dateAddedToToDoList = Date()
+//            self.task.dateAddedToToDoList = Date()
+            UIApplication.shared.applicationIconBadgeNumber += 1
+        } else {
+            UIApplication.shared.applicationIconBadgeNumber -= 1
         }
         self.task.completed.toggle()
         self.task.dateCompleted = Date()
         
-        Services.shared.updateTask(task: task)
+        Services.shared.updateTask(task: self.task)
     }
     
     func deleteTask() {
-        Services.shared.deleteTask(task: task)
+        Services.shared.deleteTask(task: self.task)
     }
     
 }

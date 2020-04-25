@@ -29,9 +29,11 @@ struct AddColorButton: View {
             ZStack {
                 Rectangle()
                     .frame(width: ADD_COLOR_BUTTON_WIDTH, height: COLOR_SELECTION_WIDTH)
+                    .opacity(0.25)
                 Image(ADD_ICON)
                     .renderingMode(.template)
-                    .blendMode(.multiply)
+                    .foregroundColor(Color(self.color))
+//                    .blendMode(.multiply)
             }
         }
         .foregroundColor(Color(String(self.color)))

@@ -19,12 +19,14 @@ struct TaskView: View {
     @State var deleteAction = true
     @State var markActive = false
     @State var deleteActive = false
+    @State var textFieldIsActive = false
     
     let screenSize = UIScreen.main.bounds
     let lightGenerator = UIImpactFeedbackGenerator(style: .light)
     
     var body: some View {
         ZStack {
+            // Action icons and colors
             ZStack {
                 Rectangle()
                     .frame(width: self.screenSize.width, height: CELL_HEIGHT)
@@ -38,7 +40,7 @@ struct TaskView: View {
                         .animation(.interactiveSpring())
                     Spacer()
                 }
-                .offset(x: deleteActionOffset())
+                .offset(x: deleteActionOffset()).drawingGroup()
                 
                 // Mark action icon
                 HStack {
@@ -49,13 +51,25 @@ struct TaskView: View {
                         .animation(.interactiveSpring())
                     Spacer()
                 }
-                .offset(x: markActionOffset())
+                .offset(x: markActionOffset()).drawingGroup()
             }
+            
+            // Task Cell with title, mark button, and more button
             ZStack {
+                // Bottom white cell
                 Rectangle()
                     .frame(height: CELL_HEIGHT)
-                    .foregroundColor(Color(self.taskViewModel.displayColor))
+                    .foregroundColor(Color(taskViewModel.displayColor))
+                    .shadow(color: self.textFieldIsActive ? .red : .clear, radius: 5, x: 0, y: 0)
+                    
                 HStack {
+       
+//                    // Color Banner
+//                    Rectangle()
+//                        .frame(width: 8, height: CELL_HEIGHT)
+//                        .foregroundColor(Color(self.taskViewModel.displayColor))
+                    
+                    // Mark button
                     Button (action: {
                         self.lightGenerator.impactOccurred()
                         self.taskViewModel.toggleTaskCompletion()
@@ -68,41 +82,65 @@ struct TaskView: View {
                         else {
                             Image(self.taskViewModel.statusImage)
                                 .renderingMode(.template)
-                                .foregroundColor(Color(ICON_BLACK_COLOR))
-                                .opacity(TASK_ICON_OPACITY)
-                                .blendMode(.luminosity)
+                                .foregroundColor(Color(taskViewModel.task.color!))
+//                                .opacity(TASK_ICON_OPACITY)
+//                                .blendMode(.luminosity)
                         }
                     }
+//                    Spacer().frame(width: 20)
+                    
+
                     Spacer()
                         .frame(width: ICON_SPACER_TITLE)
-                    Text(self.taskViewModel.task.title!)
+                    if (!self.taskViewModel.task.completed) {
+                    CustomTextField(text: self.$taskViewModel.newTitle, isActive: self.$textFieldIsActive, isCompleted: self.taskViewModel.task.completed, isFirstResponder: taskViewModel.task.title == "" ? true : false)
+                        .frame(height: CELL_HEIGHT)
                         .foregroundColor(Color(self.taskViewModel.titleDisplayColor))
+                    } else {
+                        Text(self.taskViewModel.task.title!)
+                        .frame(height: CELL_HEIGHT)
+                            .foregroundColor(Color(TASK_TITLE_COMPLETED_COLOR))
+                        
+                    }
+//                        .background(Color.red)
+//                    Text(self.taskViewModel.task.title!)
+//                        .foregroundColor(Color(self.taskViewModel.titleDisplayColor))
+//                    self.$contentViewModel.createTaskColorSelection
+//                    TextField("Test", text: self.$taskViewModel.newTitle, onEditingChanged: { if $0 { self.text = "asdfasdfasdf"} })
+                        
                     Spacer()
+                    // Show more button
                     Button (action: {
                         self.isPresented = true
                     }) {
+//                        Rectangle()
+//                        .cornerRadius(COLOR_SELECTION_CORNER_RADIUS)
+//                            .frame(width: COLOR_SELECTION_WIDTH / 1.5, height: COLOR_SELECTION_WIDTH / 1.5)
+//                        .foregroundColor(Color(taskViewModel.task.color!))
                         if self.taskViewModel.task.completed {
                             Image(SHOW_MORE_ICON)
                                 .renderingMode(.template)
                                 .foregroundColor(Color(TASK_ICON_COLOR))
                                 .opacity(TASK_ICON_OPACITY)
                                 .blendMode(.luminosity)
-                        }
-                        else {
+                        } else {
                             Image(SHOW_MORE_ICON)
                                 .foregroundColor(.black)
                                 .opacity(TASK_ICON_OPACITY)
                                 .blendMode(.luminosity)
                         }
                     }
+//                .padding()
                 }
-                .padding()
+                .padding(.leading)
+                .padding(.trailing)
             }
             .animation(self.animate ? .interactiveSpring() : .none)
             .offset(x: self.dragOffset.width)
+            .zIndex(self.textFieldIsActive ? 1 : 0)
             
             // Delete and Mark gestures
-            .simultaneousGesture(DragGesture()
+            .simultaneousGesture(DragGesture(minimumDistance: DRAG_GESTURE_MIN_DISTANCE)
                 .onChanged {
                     value in
                     self.deleteAction = value.translation.width < 0
@@ -136,7 +174,7 @@ struct TaskView: View {
                     self.giveHapticFeedback = true
                     if value.translation.width < TASK_DELETE_TRIGGER && self.deleteAction {
                         self.dragOffset.width = -(self.screenSize.width)
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
                             self.taskViewModel.deleteTask()
                         }
                     }
@@ -152,7 +190,6 @@ struct TaskView: View {
                 }
             )
         }
-        
         .sheet(isPresented: $isPresented) {
             TaskModalView(taskModalViewModel: TaskModalViewModel(task: self.taskViewModel.task))
         }
@@ -169,12 +206,11 @@ struct TaskView: View {
     }
     
     func deleteActionOffset() -> CGFloat {
-        //FIX JUMP WHEN GOING TO RESISTED PULL PART
         if self.deleteActive || dragOffset.width > -(DELETE_ICON_OFFSET) - EXTRA_DELETE_OFFSET {
             return dragOffset.width + screenSize.width
         }
         else {
-            // Exponential decay algorithm to create a restisted pulling effect
+            // Exponential decay algorithm to create a resisted pulling effect
             return screenSize.width - DELETE_ICON_OFFSET - EXTRA_DELETE_OFFSET - pow(EXP_ALG_BASE, -(dragOffset.width) * EXP_ALG_EXP_OFFSET) * (-(dragOffset.width) - DELETE_ICON_OFFSET - EXTRA_DELETE_OFFSET)
         }
     }
@@ -183,6 +219,7 @@ struct TaskView: View {
 struct TaskView_Previews: PreviewProvider {
     static var previews: some View {
         let task = Task(title: "test title", color: "red_color")
+        task.completed = true
 
         return TaskView(taskViewModel: TaskViewModel(task: task))
             .environment(\.colorScheme, .dark)

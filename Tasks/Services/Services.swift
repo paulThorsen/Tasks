@@ -21,6 +21,7 @@ public class Services {
     func addTask(title: String, color: String) {
         let task = Task(title: title, color: color)
         dao.create(task: task)
+        UIApplication.shared.applicationIconBadgeNumber += 1
     }
     
     func updateTask(task: Task) {
@@ -29,5 +30,12 @@ public class Services {
     
     func deleteTask(task: Task) {
         dao.delete(task: task)
+        if (!task.completed) {
+            UIApplication.shared.applicationIconBadgeNumber -= 1
+        }
+    }
+
+    func readTasks() -> [Task]{
+        return dao.read()
     }
 }
