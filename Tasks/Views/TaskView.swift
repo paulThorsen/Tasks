@@ -87,18 +87,17 @@ struct TaskView: View {
 //                                .blendMode(.luminosity)
                         }
                     }
-//                    Spacer().frame(width: 20)
-                    
 
                     Spacer()
                         .frame(width: ICON_SPACER_TITLE)
                     if (!self.taskViewModel.task.completed) {
-                    CustomTextField(text: self.$taskViewModel.newTitle, isActive: self.$textFieldIsActive, isCompleted: self.taskViewModel.task.completed, isFirstResponder: taskViewModel.task.title == "" ? true : false)
+                        CustomTextField(text: self.$taskViewModel.newTitle, isActive: self.$textFieldIsActive, task: self.$taskViewModel.task, isCompleted: self.taskViewModel.task.completed, isFirstResponder: taskViewModel.task.title == "" ? true : false)
                         .frame(height: CELL_HEIGHT)
                         .foregroundColor(Color(self.taskViewModel.titleDisplayColor))
                     } else {
                         Text(self.taskViewModel.task.title!)
-                        .frame(height: CELL_HEIGHT)
+                            .truncationMode(.tail)
+                            .lineLimit(1)
                             .foregroundColor(Color(TASK_TITLE_COMPLETED_COLOR))
                         
                     }
@@ -144,7 +143,6 @@ struct TaskView: View {
                 .onChanged {
                     value in
                     self.deleteAction = value.translation.width < 0
-//                    print(value.translation.width)
                     self.dragOffset = value.translation
                     self.animate = false
                     if value.translation.width < TASK_DELETE_TRIGGER && self.giveHapticFeedback && self.deleteAction {

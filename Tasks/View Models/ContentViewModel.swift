@@ -28,7 +28,16 @@ public class ContentViewModel: ObservableObject {
     func addTask(title: String, color: String) {
         Services.shared.addTask(title: title, color: color)
     }
-    
-    
-    
+
+}
+
+extension UIWindow {
+ open override func motionEnded(_ motion: UIEvent.EventSubtype, with event:   UIEvent?) {
+    if motion == .motionShake {
+        print("Device shaken")
+//        messagePublisher.send("Stop Shaking Me")
+        self.undoManager?.undo()
+        
+    }
+  }
 }

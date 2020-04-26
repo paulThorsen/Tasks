@@ -11,6 +11,7 @@ import Foundation
 public protocol DAOProtocol {
     func create(task: Task)
     func read() -> [Task]
+    func readOneTask(task: Task) -> Task
     func update(task: Task)
     func delete(task: Task)
 }

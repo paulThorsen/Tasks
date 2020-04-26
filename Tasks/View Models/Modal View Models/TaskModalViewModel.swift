@@ -21,8 +21,12 @@ public class TaskModalViewModel: ObservableObject {
         }
     }
     
+    func changeColor(color: String) {
+        self.task.color = color
+        Services.shared.updateTask(task: self.task)
+    }
+    
     var task: Task
     var displayColor: String
     var titleDisplayColor: String
-    
 }

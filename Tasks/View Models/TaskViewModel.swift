@@ -53,13 +53,6 @@ public class TaskViewModel: ObservableObject {
     }
     
     func toggleTaskCompletion() {
-        // if adding back to To-Do list, new date for dateAddedToToDoList
-        if self.task.completed {
-//            self.task.dateAddedToToDoList = Date()
-            UIApplication.shared.applicationIconBadgeNumber += 1
-        } else {
-            UIApplication.shared.applicationIconBadgeNumber -= 1
-        }
         self.task.completed.toggle()
         self.task.dateCompleted = Date()
         
@@ -68,6 +61,13 @@ public class TaskViewModel: ObservableObject {
     
     func deleteTask() {
         Services.shared.deleteTask(task: self.task)
+        print("deleted")
     }
     
+//    func deleteTaskUndoActionRegister(){
+//      self.undoManager?.registerUndo(withTarget: self, handler: { (selfTarget) in
+//        selfTarget.deleteTask()
+//
+//      })
+//    }
 }

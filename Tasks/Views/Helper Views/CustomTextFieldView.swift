@@ -15,11 +15,13 @@ struct CustomTextField: UIViewRepresentable {
 
         @Binding var text: String
         @Binding var isActive: Bool
+        @Binding var task: Task
         var didBecomeFirstResponder = false
 
-        init(text: Binding<String>, isActive: Binding<Bool>) {
+        init(text: Binding<String>, isActive: Binding<Bool>, task: Binding<Task>) {
             _text = text
             _isActive = isActive
+            _task = task
         }
         
         func textFieldDidEndEditing(_ textField: UITextField) {
@@ -27,9 +29,8 @@ struct CustomTextField: UIViewRepresentable {
             while (text.last == " ") {
                 text.removeLast()
             }
-            
             if (text == "") {
-                // Delete this item
+                Services.shared.deleteTask(task: self.task)
             }
         }
         
@@ -50,21 +51,23 @@ struct CustomTextField: UIViewRepresentable {
 
     @Binding var text: String
     @Binding var isActive: Bool
+    @Binding var task: Task
+    
     let isCompleted: Bool
     var isFirstResponder: Bool = false
 
     func makeUIView(context: UIViewRepresentableContext<CustomTextField>) -> UITextField {
-        // change UITextField text to white and black based on completion status
         let textField = UITextField(frame: .zero)
         textField.delegate = context.coordinator
         textField.returnKeyType = UIReturnKeyType.done
-        textField.placeholder = "New Task..."
+        textField.placeholder = "New task..."
         textField.textColor = UIColor(named: TASK_TITLE_NOT_COMPLETED_COLOR)
+        textField.setContentCompressionResistancePriority(UILayoutPriority.init(250), for: NSLayoutConstraint.Axis.horizontal)
         return textField
     }
 
     func makeCoordinator() -> CustomTextField.Coordinator {
-        return Coordinator(text: $text, isActive: $isActive)
+        return Coordinator(text: $text, isActive: $isActive, task: $task)
     }
 
     func updateUIView(_ uiView: UITextField, context: UIViewRepresentableContext<CustomTextField>) {
@@ -73,24 +76,5 @@ struct CustomTextField: UIViewRepresentable {
             uiView.becomeFirstResponder()
             context.coordinator.didBecomeFirstResponder = true
         }
-    }
-}
-
-struct CustomTextFieldView: View {
-    @State var text: String = ""
-    @State var isActive: Bool = false
-    
-    var body: some View {
-        GeometryReader { geometry in
-            CustomTextField(text: self.$text, isActive: self.$isActive, isCompleted: false, isFirstResponder: true)
-                .frame(width: 300, height: 50)
-                .background(Color.red)
-        }
-    }
-}
-
-struct CustomTextFieldView_Previews: PreviewProvider {
-    static var previews: some View {
-        CustomTextFieldView()
     }
 }

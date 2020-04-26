@@ -44,6 +44,17 @@ public class CoreDataDAO: DAOProtocol {
         return taskArray
     }
     
+    // reads the task as is stored Core Data w not modifications
+    public func readOneTask(task: Task) -> Task {
+        let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "TaskCD")
+        fetchRequest.predicate = NSPredicate(format: "id = %@", task.id!.uuidString)
+        let result = try? managedObjectContext.fetch(fetchRequest)
+        let tasks = result as! [TaskCD]
+
+        return Task(task: tasks[0])
+    }
+    
     public func update(task: Task) {
         let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "TaskCD")

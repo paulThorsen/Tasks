@@ -40,3 +40,6 @@ public class Task: Identifiable {
     public var color: String?
     public var id: UUID?
 }
+
+
+var task = Task(title: "demo", color: "red")

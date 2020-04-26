@@ -29,4 +29,15 @@ extension TaskCD {
         
         return request
     }
+    
+//    static func getOneTasksById(id: String) -> NSFetchRequest<TaskCD> {
+//        let request: NSFetchRequest<TaskCD> = TaskCD.fetchRequest() as! NSFetchRequest<TaskCD>
+//
+//        let sortDescriptor = NSSortDescriptor(key: "dateCreated", ascending: true)
+//        request.sortDescriptors = [sortDescriptor]
+//        request.predicate = NSPredicate(format: "id = %@", task.id!.uuidString)
+//
+//        return request
+//    }
+
 }

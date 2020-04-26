@@ -11,41 +11,63 @@ import SwiftUI
 struct ColorSquareBlock: View {
     @Binding var taskColor: String
     
+    func doSomething() {
+        return
+    }
+    
     var body: some View {
         HStack {
             ForEach(Colors.allCases, id: \.self) { color in
                 HStack {
-                    ColorButton(taskColor: self.$taskColor, color: color.rawValue).padding()
+                    Button(action: { self.doSomething() }) {
+                        if self.taskColor == color.rawValue {
+                            Rectangle()
+                            .frame(width: COLOR_SELECTION_WIDTH, height: COLOR_SELECTION_WIDTH)
+                            .cornerRadius(COLOR_SELECTION_CORNER_RADIUS)
+                                .foregroundColor(Color(String(color.rawValue)))
+                            .overlay(Rectangle().stroke(Color(TASK_ICON_COLOR), lineWidth: COLOR_SELECTION_LINE_WIDTH)
+                                .cornerRadius(COLOR_SELECTION_CORNER_RADIUS)
+                                .clipShape(Rectangle())
+                                .opacity(TASK_ICON_OPACITY))
+                        } else {
+                            Rectangle()
+                                .cornerRadius(COLOR_SELECTION_CORNER_RADIUS)
+                                .frame(width: COLOR_SELECTION_WIDTH, height: COLOR_SELECTION_WIDTH)
+                        }
+                    }
+                }
+                .foregroundColor(Color(String(color.rawValue)))
+            }
+        }
+    }
+    
+    struct ColorButton: View {
+        @Binding var taskColor: String
+        var color: String
+        
+        var body: some View {
+            Button(action: {self.taskColor = self.color}) {
+                if self.taskColor == self.color {
+                    Rectangle()
+                        .frame(width: COLOR_SELECTION_WIDTH, height: COLOR_SELECTION_WIDTH)
+                        .cornerRadius(COLOR_SELECTION_CORNER_RADIUS)
+                        .foregroundColor(Color(String(self.color)))
+                        .overlay(Rectangle().stroke(Color(TASK_ICON_COLOR), lineWidth: COLOR_SELECTION_LINE_WIDTH)
+                            .cornerRadius(COLOR_SELECTION_CORNER_RADIUS)
+                            .clipShape(Rectangle())
+                            .opacity(TASK_ICON_OPACITY))
+                } else {
+                    Rectangle()
+                        .cornerRadius(COLOR_SELECTION_CORNER_RADIUS)
+                        .frame(width: COLOR_SELECTION_WIDTH, height: COLOR_SELECTION_WIDTH)
                 }
             }
+            .foregroundColor(Color(String(self.color)))
         }
     }
 }
 
-struct ColorButton: View {
-    @Binding var taskColor: String
-    var color: String
-    
-    var body: some View {
-        Button(action: {self.taskColor = self.color}) {
-            if self.taskColor == self.color {
-                Rectangle()
-                    .frame(width: COLOR_SELECTION_WIDTH, height: COLOR_SELECTION_WIDTH)
-                    .cornerRadius(COLOR_SELECTION_CORNER_RADIUS)
-                    .foregroundColor(Color(String(self.color)))
-                    .overlay(Rectangle().stroke(Color(TASK_ICON_COLOR), lineWidth: COLOR_SELECTION_LINE_WIDTH)
-                        .cornerRadius(COLOR_SELECTION_CORNER_RADIUS)
-                        .clipShape(Rectangle())
-                        .opacity(TASK_ICON_OPACITY))
-            } else {
-                Rectangle()
-                    .cornerRadius(COLOR_SELECTION_CORNER_RADIUS)
-                    .frame(width: COLOR_SELECTION_WIDTH, height: COLOR_SELECTION_WIDTH)
-            }
-        }
-        .foregroundColor(Color(String(self.color)))
-    }
-}
+
 
 struct ColorSquareBlock_Previews: PreviewProvider {
     static var previews: some View {

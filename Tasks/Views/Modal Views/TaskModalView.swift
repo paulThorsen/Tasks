@@ -13,8 +13,32 @@ struct TaskModalView: View {
     
     var body: some View {
         VStack {
-            ColorSquareBlock(taskColor: .constant(taskModalViewModel.task.color!))
+             HStack {
+               ForEach(Colors.allCases, id: \.self) { color in
+                   HStack {
+                    Button(action: { self.taskModalViewModel.changeColor(color: color.rawValue) }) {
+                         if self.taskModalViewModel.task.color == color.rawValue {
+                                Rectangle()
+                                .frame(width: COLOR_SELECTION_WIDTH, height: COLOR_SELECTION_WIDTH)
+                                .cornerRadius(COLOR_SELECTION_CORNER_RADIUS)
+                                    .foregroundColor(Color(String(color.rawValue)))
+                                .overlay(Rectangle().stroke(Color(TASK_ICON_COLOR), lineWidth: COLOR_SELECTION_LINE_WIDTH)
+                                    .cornerRadius(COLOR_SELECTION_CORNER_RADIUS)
+                                    .clipShape(Rectangle())
+                                    .opacity(TASK_ICON_OPACITY))
+                            } else {
+                                Rectangle()
+                                    .cornerRadius(COLOR_SELECTION_CORNER_RADIUS)
+                                    .frame(width: COLOR_SELECTION_WIDTH, height:     COLOR_SELECTION_WIDTH)
+                            }
+                        }
+                    }
+                    .foregroundColor(Color(String(color.rawValue)))
+                }
+            }
+            
             Text("Hello, World!")
+            Spacer()
         }
     }
 }

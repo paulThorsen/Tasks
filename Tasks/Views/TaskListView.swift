@@ -32,7 +32,6 @@ struct TaskListView: View {
             Spacer()
         }
         .onAppear(perform: {
-            print(self.tasks.filter { !$0.completed })
             UIApplication.shared.applicationIconBadgeNumber = self.tasks.filter { !$0.completed } .count
         })
     }

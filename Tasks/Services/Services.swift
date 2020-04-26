@@ -25,6 +25,12 @@ public class Services {
     }
     
     func updateTask(task: Task) {
+        let _task = dao.readOneTask(task: task)
+        if (_task.completed && !task.completed) {
+            UIApplication.shared.applicationIconBadgeNumber += 1
+        } else if (!_task.completed && task.completed) {
+            UIApplication.shared.applicationIconBadgeNumber -= 1
+        }
         dao.update(task: task)
     }
     
@@ -39,3 +45,4 @@ public class Services {
         return dao.read()
     }
 }
+
