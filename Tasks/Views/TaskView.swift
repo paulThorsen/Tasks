@@ -62,7 +62,7 @@ struct TaskView: View {
                     .foregroundColor(Color(taskViewModel.displayColor))
                     .shadow(color: self.textFieldIsActive ? .red : .clear, radius: 5, x: 0, y: 0)
                     
-                HStack {
+                HStack(spacing: 0) {
        
 //                    // Color Banner
 //                    Rectangle()
@@ -78,22 +78,25 @@ struct TaskView: View {
                             Image(self.taskViewModel.statusImage)
                                 .renderingMode(.template)
                                 .foregroundColor(.green)
+                            .frame(height: CELL_HEIGHT)
+                            .padding(.leading)
+                            .padding(.trailing)
                         }
                         else {
                             Image(self.taskViewModel.statusImage)
                                 .renderingMode(.template)
-                                .foregroundColor(Color(taskViewModel.task.color!))
+                                .foregroundColor(Color(taskViewModel.task.color!)).frame(height: CELL_HEIGHT)
+                                .padding(.leading)
+                                .padding(.trailing)
 //                                .opacity(TASK_ICON_OPACITY)
 //                                .blendMode(.luminosity)
                         }
                     }
-
-                    Spacer()
-                        .frame(width: ICON_SPACER_TITLE)
+                        
                     if (!self.taskViewModel.task.completed) {
                         CustomTextField(text: self.$taskViewModel.newTitle, isActive: self.$textFieldIsActive, task: self.$taskViewModel.task, isCompleted: self.taskViewModel.task.completed, isFirstResponder: taskViewModel.task.title == "" ? true : false)
-                        .frame(height: CELL_HEIGHT)
-                        .foregroundColor(Color(self.taskViewModel.titleDisplayColor))
+                            .frame(height: CELL_HEIGHT)
+                            .foregroundColor(Color(self.taskViewModel.titleDisplayColor))
                     } else {
                         Text(self.taskViewModel.task.title!)
                             .truncationMode(.tail)
@@ -107,7 +110,6 @@ struct TaskView: View {
 //                    self.$contentViewModel.createTaskColorSelection
 //                    TextField("Test", text: self.$taskViewModel.newTitle, onEditingChanged: { if $0 { self.text = "asdfasdfasdf"} })
                         
-                    Spacer()
                     // Show more button
                     Button (action: {
                         self.isPresented = true
@@ -122,17 +124,20 @@ struct TaskView: View {
                                 .foregroundColor(Color(TASK_ICON_COLOR))
                                 .opacity(TASK_ICON_OPACITY)
                                 .blendMode(.luminosity)
+                            .frame(height: CELL_HEIGHT)
+                            .padding(.leading)
+                            .padding(.trailing)
                         } else {
                             Image(SHOW_MORE_ICON)
                                 .foregroundColor(.black)
                                 .opacity(TASK_ICON_OPACITY)
                                 .blendMode(.luminosity)
+                            .frame(height: CELL_HEIGHT)
+                            .padding(.leading)
+                            .padding(.trailing)
                         }
                     }
-//                .padding()
                 }
-                .padding(.leading)
-                .padding(.trailing)
             }
             .animation(self.animate ? .interactiveSpring() : .none)
             .offset(x: self.dragOffset.width)
@@ -217,7 +222,7 @@ struct TaskView: View {
 struct TaskView_Previews: PreviewProvider {
     static var previews: some View {
         let task = Task(title: "test title", color: "red_color")
-        task.completed = true
+        task.completed = false
 
         return TaskView(taskViewModel: TaskViewModel(task: task))
             .environment(\.colorScheme, .dark)
